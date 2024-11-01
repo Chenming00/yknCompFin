@@ -26,6 +26,7 @@ fs.readdir(hwFolder, (err, files) => {
             padding: 20px;
             background-color: #f5f8fa;
             color: #24292e;
+            min-height: 100vh;
         }
         .container {
             max-width: 800px;
@@ -46,48 +47,83 @@ fs.readdir(hwFolder, (err, files) => {
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin: 20px 0;
-            padding: 10px;
+            margin: 20px 0 30px;
+            padding: 12px;
             background-color: #f1f8ff;
             border-radius: 6px;
             text-decoration: none;
             color: #0366d6;
-            transition: background-color 0.2s;
+            transition: all 0.2s;
         }
         .github-link:hover {
             background-color: #e1efff;
+            transform: translateY(-2px);
         }
         .github-icon {
             width: 24px;
             height: 24px;
         }
-        ul {
-            list-style-type: none;
+        .homework-list {
+            list-style: none;
             padding: 0;
-            display: grid;
-            gap: 15px;
+            counter-reset: homework;
         }
-        li {
-            margin: 0;
-            transition: transform 0.2s;
-        }
-        li:hover {
-            transform: translateX(5px);
+        .homework-list li {
+            counter-increment: homework;
+            margin-bottom: 15px;
+            position: relative;
         }
         .homework-link {
-            display: block;
-            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            padding: 16px 20px 16px 60px;
             background-color: #f6f8fa;
             border: 1px solid #e1e4e8;
-            border-radius: 6px;
+            border-radius: 8px;
             color: #24292e;
             text-decoration: none;
+            transition: all 0.2s;
+            font-size: 1.1em;
+        }
+        .homework-link:before {
+            content: counter(homework);
+            position: absolute;
+            left: 20px;
+            width: 28px;
+            height: 28px;
+            background-color: #0366d6;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
             transition: all 0.2s;
         }
         .homework-link:hover {
             background-color: #f1f8ff;
             border-color: #0366d6;
             color: #0366d6;
+            transform: translateX(5px);
+        }
+        .homework-link:hover:before {
+            background-color: #035cc1;
+            transform: scale(1.1);
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            .homework-link {
+                padding: 12px 15px 12px 50px;
+                font-size: 1em;
+            }
+            .homework-link:before {
+                left: 15px;
+                width: 24px;
+                height: 24px;
+                font-size: 0.9em;
+            }
         }
     </style>
 </head>
@@ -100,7 +136,7 @@ fs.readdir(hwFolder, (err, files) => {
             </svg>
             View on GitHub
         </a>
-        <ul>
+        <ol class="homework-list">
             ${htmlFiles.map(file => `
                 <li>
                     <a href="hw/${file}" class="homework-link">
@@ -108,7 +144,7 @@ fs.readdir(hwFolder, (err, files) => {
                     </a>
                 </li>
             `).join('\n')}
-        </ul>
+        </ol>
     </div>
 </body>
 </html>
