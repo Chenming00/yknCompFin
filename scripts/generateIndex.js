@@ -24,105 +24,80 @@ fs.readdir(hwFolder, (err, files) => {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f5f8fa;
+            background-color: #ffffff;
             color: #24292e;
-            min-height: 100vh;
+            line-height: 1.6;
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         h1 {
             text-align: center;
-            color: #0366d6;
+            color: #24292e;
             margin-bottom: 30px;
-            font-size: 2.5em;
+            font-size: 2.2em;
+            font-weight: 600;
         }
         .github-link {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             margin: 20px 0 30px;
-            padding: 12px;
-            background-color: #f1f8ff;
-            border-radius: 6px;
+            padding: 8px 16px;
             text-decoration: none;
-            color: #0366d6;
-            transition: all 0.2s;
+            color: #24292e;
+            transition: color 0.2s;
+            font-size: 1.1em;
         }
         .github-link:hover {
-            background-color: #e1efff;
-            transform: translateY(-2px);
+            color: #0366d6;
         }
         .github-icon {
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
         }
         .homework-list {
             list-style: none;
             padding: 0;
+            margin: 0;
             counter-reset: homework;
         }
-        .homework-list li {
+        .homework-item {
             counter-increment: homework;
-            margin-bottom: 15px;
-            position: relative;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #eaecef;
         }
         .homework-link {
             display: flex;
             align-items: center;
-            padding: 16px 20px 16px 60px;
-            background-color: #f6f8fa;
-            border: 1px solid #e1e4e8;
-            border-radius: 8px;
+            padding: 12px 16px 12px 0;
             color: #24292e;
             text-decoration: none;
             transition: all 0.2s;
-            font-size: 1.1em;
+            position: relative;
         }
         .homework-link:before {
-            content: counter(homework);
-            position: absolute;
-            left: 20px;
-            width: 28px;
-            height: 28px;
-            background-color: #0366d6;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            transition: all 0.2s;
+            content: counter(homework) ".";
+            min-width: 32px;
+            color: #6a737d;
+            font-weight: 500;
         }
         .homework-link:hover {
-            background-color: #f1f8ff;
-            border-color: #0366d6;
             color: #0366d6;
-            transform: translateX(5px);
-        }
-        .homework-link:hover:before {
-            background-color: #035cc1;
-            transform: scale(1.1);
+            padding-left: 8px;
         }
         @media (max-width: 600px) {
             .container {
                 padding: 15px;
             }
-            .homework-link {
-                padding: 12px 15px 12px 50px;
-                font-size: 1em;
+            h1 {
+                font-size: 1.8em;
             }
-            .homework-link:before {
-                left: 15px;
-                width: 24px;
-                height: 24px;
-                font-size: 0.9em;
+            .homework-link {
+                padding: 10px 12px 10px 0;
             }
         }
     </style>
@@ -138,7 +113,7 @@ fs.readdir(hwFolder, (err, files) => {
         </a>
         <ol class="homework-list">
             ${htmlFiles.map(file => `
-                <li>
+                <li class="homework-item">
                     <a href="hw/${file}" class="homework-link">
                         ${file.replace('.html', '')}
                     </a>
