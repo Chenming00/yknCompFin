@@ -1,1 +1,55 @@
-test
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>俞可宁是小猪</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffe6f2;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #ff69b4;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .pig {
+            width: 200px;
+            height: 200px;
+            animation: bounce 2s infinite ease-in-out;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <h1>俞可宁是小猪</h1>
+    <svg class="pig" viewBox="0 0 200 200">
+        <!-- 猪的身体 -->
+        <circle cx="100" cy="100" r="60" fill="#ffb6c1"/>
+        <!-- 猪鼻子 -->
+        <circle cx="100" cy="110" r="20" fill="#ff99cc"/>
+        <circle cx="93" cy="108" r="5" fill="#000"/>
+        <circle cx="107" cy="108" r="5" fill="#000"/>
+        <!-- 猪耳朵 -->
+        <path d="M50 60 Q70 40 90 60" fill="#ff99cc" stroke="#ff99cc" stroke-width="10"/>
+        <path d="M150 60 Q130 40 110 60" fill="#ff99cc" stroke="#ff99cc" stroke-width="10"/>
+        <!-- 可爱的眼睛 -->
+        <circle cx="80" cy="85" r="8" fill="#000"/>
+        <circle cx="120" cy="85" r="8" fill="#000"/>
+        <circle cx="83" cy="82" r="3" fill="#fff"/>
+        <circle cx="123" cy="82" r="3" fill="#fff"/>
+        <!-- 微笑 -->
+        <path d="M85 120 Q100 130 115 120" fill="none" stroke="#000" stroke-width="3"/>
+    </svg>
+</body>
+</html>
