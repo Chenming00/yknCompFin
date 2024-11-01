@@ -1,6 +1,6 @@
 [中文](https://github.com/Chenming00/yknCompFin/blob/main/README_ZH_CN.md)
 
-# My Static Site
+# YKN ConpFin Static Site
 
 This is a static website project deployed on Cloudflare Pages. The project includes an automatic script that generates an `index.html` file listing all HTML files in the `hw` folder. Every time the repository is updated, Cloudflare Pages rebuilds and redeploys the site.
 
