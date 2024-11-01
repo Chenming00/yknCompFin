@@ -1,4 +1,4 @@
-# 我的静态网站
+# YKN CONPFIN静态网站
 
 这是一个部署在 Cloudflare Pages 上的静态网站项目。项目包含一个自动生成 `index.html` 文件的脚本，用于列出 `hw` 文件夹中的所有 HTML 文件。每次向仓库推送更改时，Cloudflare Pages 都会自动重建并重新部署该网站。
 
