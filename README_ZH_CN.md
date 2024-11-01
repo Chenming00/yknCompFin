@@ -39,8 +39,8 @@ my-static-site/
 
 1. 克隆仓库：
    ```bash
-   git clone https://github.com/your-username/my-static-site.git
-   cd my-static-site
+   git clone https://github.com/Chenming00/yknCompFin.git
+   cd yknCompFin
    ```
 
 2. 确保已安装 Node.js。
