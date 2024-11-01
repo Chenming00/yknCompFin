@@ -41,8 +41,8 @@ To test or develop locally:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/my-static-site.git
-   cd my-static-site
+   git clone https://github.com/Chenming00/yknCompFin.git
+   cd yknCompFin
    ```
 
 2. Install Node.js if it is not installed.
