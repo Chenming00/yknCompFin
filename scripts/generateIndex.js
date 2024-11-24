@@ -8,7 +8,7 @@ const CONFIG = {
     githubRepo: 'https://github.com/Chenming00/yknCompFin'
 };
 
-// 通用样式
+// 通用样式更新，添加 GitHub 按钮样式
 const COMMON_STYLES = `
 <style>
 .floating-toolbar {
@@ -47,8 +47,14 @@ const COMMON_STYLES = `
     box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
 }
 
+.github-button {
+    background: #24292e;
+    box-shadow: 0 2px 8px rgba(36, 41, 46, 0.3);
+}
+
 .toolbar-button:hover {
     transform: translateY(-2px);
+    filter: brightness(1.1);
 }
 
 .toolbar-button svg {
@@ -62,6 +68,9 @@ const COMMON_STYLES = `
     }
     .download-button {
         background: #2ea043;
+    }
+    .github-button {
+        background: #30363d;
     }
 }
 
@@ -94,7 +103,7 @@ function downloadPage() {
 </script>
 `;
 
-// 工具栏 HTML
+// 更新工具栏 HTML，添加 GitHub 按钮
 const TOOLBAR_HTML = `
 <div class="floating-toolbar">
     <a href="../index.html" class="toolbar-button back-to-home">
@@ -112,6 +121,12 @@ const TOOLBAR_HTML = `
         </svg>
         下载页面
     </button>
+    <a href="${CONFIG.githubRepo}" target="_blank" class="toolbar-button github-button">
+        <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        GitHub
+    </a>
 </div>
 `;
 
@@ -159,6 +174,21 @@ function generateHTML(htmlFiles) {
             color: #0366d6;
             margin-bottom: 2rem;
         }
+        .github-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 2rem;
+            text-decoration: none;
+            color: #24292e;
+            padding: 10px 20px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .github-header:hover {
+            background: #f6f8fa;
+        }
         .homework-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -197,6 +227,12 @@ function generateHTML(htmlFiles) {
                 border-color: #30363d;
             }
             .homework-link { color: #58a6ff; }
+            .github-header {
+                color: #c9d1d9;
+            }
+            .github-header:hover {
+                background: #21262d;
+            }
             .build-info { 
                 border-color: #30363d;
                 color: #8b949e;
@@ -208,6 +244,12 @@ function generateHTML(htmlFiles) {
 <body>
     <div class="container">
         <h1>${CONFIG.title}</h1>
+        <a href="${CONFIG.githubRepo}" class="github-header" target="_blank">
+            <svg height="32" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            <span>View on GitHub</span>
+        </a>
         <div class="homework-grid">
             ${htmlFiles.length > 0 
                 ? htmlFiles
@@ -222,7 +264,8 @@ function generateHTML(htmlFiles) {
                     .map(file => {
                         const displayName = file
                             .replace('.html', '')
-                            .replace(/hw(\d+)_question(\d+)/i, 'Homework $1 - Question $2');
+                            .replace(/hw(\d+)_question(\d+)/i, 'Homework $1 - Question $2')
+                            .replace('test', 'Test');
                         return `
                         <div class="homework-item">
                             <a href="hw/${file}" class="homework-link">${displayName}</a>
@@ -240,6 +283,7 @@ function generateHTML(htmlFiles) {
             })} (GMT+8)
         </div>
     </div>
+    ${TOOLBAR_HTML}
 </body>
 </html>`;
 }
