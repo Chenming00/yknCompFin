@@ -60,4 +60,17 @@ my-static-site/
 
 ### 许可证
 
-此项目遵循 [MIT 许可证](LICENSE)。
+此项目遵循 [CC BY-NC 许可证](LICENSE)。
+[![Creative Commons License](https://i.creativecommons.org/l/by-nc/4.0/88x31.png)](http://creativecommons.org/licenses/by-nc/4.0/)
+
+本作品采用 [知识共享署名-非商业性使用 4.0 国际许可协议](http://creativecommons.org/licenses/by-nc/4.0/) 进行许可。
+
+Copyright (c) 2024 Kening Yu (i@cmand.us)
+
+这意味着您可以：
+- ✅ 复制、分享和修改本作品
+- ✅ 将本作品用于个人学习和非商业用途
+
+但您必须：
+- ✅ 署名 - 标明原作者及来源
+- ❌ 禁止商业使用 - 不得将本作品用于商业目的
