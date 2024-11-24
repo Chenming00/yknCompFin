@@ -1,8 +1,8 @@
 {
-    "name": "my-static-site",
-    "version": "1.0.0",
-    "scripts": {
-      "build": "node scripts/generateIndex.js"
-    }
+  "name": "ykn-compfin",
+  "version": "1.0.0",
+  "scripts": {
+    "generate": "node scripts/generateIndex.js",
+    "build": "npm run generate"
   }
-  
+}
