@@ -292,7 +292,7 @@ function generateHTML(htmlFiles) {
 </html>`;
 }
 
-// 主函数保持不变
+/ 主函数
 async function generateIndex() {
     try {
         console.log('🚀 开始生成...');
@@ -310,4 +310,16 @@ async function generateIndex() {
         
         console.log('✅ 完成！');
         console.log(`- 处理了 ${htmlFiles.length} 个作业文件`);
-        console.log('
+        console.log('- 生成了索引页面');
+
+    } catch (error) {
+        console.error('❌ 错误:', error);
+        throw error;
+    }
+}
+
+// 运行
+generateIndex().catch(error => {
+    console.error('❌ 运行失败:', error);
+    process.exit(1);
+});
