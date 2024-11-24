@@ -4,11 +4,11 @@ const path = require('path');
 const CONFIG = {
     hwFolder: path.join(__dirname, '../hw'),
     outputPath: path.join(__dirname, '../index.html'),
-    title: 'YKN 计算金融作业集',
+    title: 'YKN Computational Finance Homework',
     githubRepo: 'https://github.com/Chenming00/yknCompFin'
 };
 
-// 通用样式
+// Common styles
 const COMMON_STYLES = `
 <style>
 .floating-toolbar {
@@ -29,7 +29,7 @@ const COMMON_STYLES = `
     border-radius: 50px;
     color: white;
     text-decoration: none;
-    font-family: -apple-system, system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 14px;
     transition: all 0.3s ease;
     cursor: pointer;
@@ -104,7 +104,7 @@ function downloadPage() {
 </script>
 `;
 
-// 工具栏 HTML
+// Toolbar HTML
 const TOOLBAR_HTML = `
 <div class="floating-toolbar">
     <a href="../index.html" class="toolbar-button back-to-home">
@@ -112,7 +112,7 @@ const TOOLBAR_HTML = `
             <path d="M19 12H5"/>
             <path d="M12 19l-7-7 7-7"/>
         </svg>
-        返回首页
+        Home
     </a>
     <button onclick="downloadPage()" class="toolbar-button download-button">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -120,7 +120,7 @@ const TOOLBAR_HTML = `
             <polyline points="7 10 12 15 17 10"/>
             <line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
-        下载页面
+        Download
     </button>
     <a href="${CONFIG.githubRepo}" target="_blank" class="toolbar-button github-button">
         <svg viewBox="0 0 16 16" fill="currentColor" height="16" width="16">
@@ -131,7 +131,7 @@ const TOOLBAR_HTML = `
 </div>
 `;
 
-// 修改作业文件，添加工具栏
+// Modify homework files to add toolbar
 async function modifyHomeworkFile(filePath) {
     try {
         let content = await fs.readFile(filePath, 'utf8');
@@ -143,24 +143,24 @@ async function modifyHomeworkFile(filePath) {
             content = content.replace('</head>', COMMON_STYLES + '</head>')
                            .replace('</body>', TOOLBAR_HTML + '</body>');
             await fs.writeFile(filePath, content, 'utf8');
-            console.log(`✅ 已更新: ${path.basename(filePath)}`);
+            console.log(`✅ Updated: ${path.basename(filePath)}`);
         }
     } catch (error) {
-        console.error(`❌ 修改失败 ${filePath}:`, error);
+        console.error(`❌ Failed to modify ${filePath}:`, error);
     }
 }
 
-// 生成主页 HTML
+// Generate main HTML
 function generateHTML(htmlFiles) {
     return `<!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${CONFIG.title}</title>
     <style>
         body {
-            font-family: -apple-system, system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             margin: 0;
             padding: 20px;
             background: #f6f8fa;
@@ -258,7 +258,7 @@ function generateHTML(htmlFiles) {
             <svg height="32" viewBox="0 0 16 16" fill="currentColor">
                 <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
             </svg>
-            <span>在 GitHub 上查看</span>
+            <span>View on GitHub</span>
         </a>
         <div class="homework-grid">
             ${htmlFiles.length > 0 
@@ -274,19 +274,19 @@ function generateHTML(htmlFiles) {
                     .map(file => {
                         const displayName = file
                             .replace('.html', '')
-                            .replace(/hw(\d+)_question(\d+)/i, '作业 $1 - 问题 $2')
-                            .replace(/hw(\d+)/i, '作业 $1')
-                            .replace('test', '测试');
+                            .replace(/hw(\d+)_question(\d+)/i, 'Homework $1 - Question $2')
+                            .replace(/hw(\d+)/i, 'Homework $1')
+                            .replace('test', 'Test');
                         return `
                         <div class="homework-item">
                             <a href="hw/${file}" class="homework-link">${displayName}</a>
                         </div>`;
                     }).join('\n')
-                : '<div class="homework-item">暂无作业文件</div>'
+                : '<div class="homework-item">No homework files available</div>'
             }
         </div>
         <div class="build-info">
-            最后更新: ${new Date().toLocaleString('zh-CN', { 
+            Last updated: ${new Date().toLocaleString('en-US', { 
                 timeZone: 'Asia/Shanghai',
                 year: 'numeric', 
                 month: 'long', 
@@ -302,20 +302,28 @@ function generateHTML(htmlFiles) {
 </html>`;
 }
 
-// 主函数
+// Main function
 async function generateIndex() {
     try {
-        console.log('🚀 开始生成...');
+        console.log('🚀 Starting generation...');
         
-        // 确保目录存在
+        // Ensure directory exists
         await fs.mkdir(CONFIG.hwFolder, { recursive: true });
         
-        // 读取文件
+        // Read files
         const files = await fs.readdir(CONFIG.hwFolder);
         const htmlFiles = files.filter(file => path.extname(file) === '.html');
         
-        // 处理每个作业文件
+        // Process each homework file
         for (const file of htmlFiles) {
             const filePath = path.join(CONFIG.hwFolder, file);
             await modifyHomeworkFile(filePath);
         }
+        
+        // Generate index page
+        const htmlContent = generateHTML(htmlFiles);
+        await fs.writeFile(CONFIG.outputPath, htmlContent, 'utf8');
+        
+        console.log('✅ Done!');
+        console.log(`- Processed ${htmlFiles.length} homework files`);
+        console
