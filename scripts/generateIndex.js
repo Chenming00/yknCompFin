@@ -8,7 +8,7 @@ const CONFIG = {
     githubRepo: 'https://github.com/Chenming00/yknCompFin'
 };
 
-// 更新工具栏的样式和 HTML，特别注意中文字符的编码
+// 通用样式
 const COMMON_STYLES = `
 <style>
 .floating-toolbar {
@@ -104,6 +104,7 @@ function downloadPage() {
 </script>
 `;
 
+// 工具栏 HTML
 const TOOLBAR_HTML = `
 <div class="floating-toolbar">
     <a href="../index.html" class="toolbar-button back-to-home">
@@ -130,13 +131,12 @@ const TOOLBAR_HTML = `
 </div>
 `;
 
-// 修改作业文件的函数
+// 修改作业文件，添加工具栏
 async function modifyHomeworkFile(filePath) {
     try {
         let content = await fs.readFile(filePath, 'utf8');
         
         if (!content.includes('floating-toolbar')) {
-            // 确保 HTML 文件有正确的编码声明
             if (!content.includes('charset=UTF-8')) {
                 content = content.replace(/<head>/, '<head>\n    <meta charset="UTF-8">');
             }
@@ -215,6 +215,11 @@ function generateHTML(htmlFiles) {
             text-decoration: none;
             font-weight: 500;
         }
+        .homework-meta {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 4px;
+        }
         .build-info {
             margin-top: 2rem;
             padding-top: 1rem;
@@ -231,6 +236,7 @@ function generateHTML(htmlFiles) {
                 border-color: #30363d;
             }
             .homework-link { color: #58a6ff; }
+            .homework-meta { color: #8b949e; }
             .github-header {
                 color: #c9d1d9;
             }
@@ -269,6 +275,7 @@ function generateHTML(htmlFiles) {
                         const displayName = file
                             .replace('.html', '')
                             .replace(/hw(\d+)_question(\d+)/i, '作业 $1 - 问题 $2')
+                            .replace(/hw(\d+)/i, '作业 $1')
                             .replace('test', '测试');
                         return `
                         <div class="homework-item">
@@ -281,8 +288,11 @@ function generateHTML(htmlFiles) {
         <div class="build-info">
             最后更新: ${new Date().toLocaleString('zh-CN', { 
                 timeZone: 'Asia/Shanghai',
-                year: 'numeric', month: 'long', day: 'numeric',
-                hour: '2-digit', minute: '2-digit',
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit', 
+                minute: '2-digit',
                 hour12: false
             })} (GMT+8)
         </div>
@@ -292,34 +302,20 @@ function generateHTML(htmlFiles) {
 </html>`;
 }
 
-/ 主函数
+// 主函数
 async function generateIndex() {
     try {
         console.log('🚀 开始生成...');
         
+        // 确保目录存在
+        await fs.mkdir(CONFIG.hwFolder, { recursive: true });
+        
+        // 读取文件
         const files = await fs.readdir(CONFIG.hwFolder);
         const htmlFiles = files.filter(file => path.extname(file) === '.html');
         
+        // 处理每个作业文件
         for (const file of htmlFiles) {
             const filePath = path.join(CONFIG.hwFolder, file);
             await modifyHomeworkFile(filePath);
         }
-        
-        const htmlContent = generateHTML(htmlFiles);
-        await fs.writeFile(CONFIG.outputPath, htmlContent, 'utf8');
-        
-        console.log('✅ 完成！');
-        console.log(`- 处理了 ${htmlFiles.length} 个作业文件`);
-        console.log('- 生成了索引页面');
-
-    } catch (error) {
-        console.error('❌ 错误:', error);
-        throw error;
-    }
-}
-
-// 运行
-generateIndex().catch(error => {
-    console.error('❌ 运行失败:', error);
-    process.exit(1);
-});
