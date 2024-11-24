@@ -62,5 +62,17 @@ Feel free to submit issues or pull requests if you'd like to improve this projec
 
 ### License
 
-This project is open source and available under the [MIT License](LICENSE).
+[![Creative Commons License](https://i.creativecommons.org/l/by-nc/4.0/88x31.png)](http://creativecommons.org/licenses/by-nc/4.0/)
+
+This work is licensed under a [Creative Commons Attribution-NonCommercial 4.0 International License](http://creativecommons.org/licenses/by-nc/4.0/).
+
+Copyright (c) 2024 Kening Yu (i@cmand.us)
+
+You are free to:
+- ✅ Copy, share, and modify this work
+- ✅ Use this work for personal study and non-commercial purposes
+
+Under the following terms:
+- ✅ Attribution - You must give credit to the original author and source
+- ❌ NonCommercial - You may not use this work for commercial purposes
 
