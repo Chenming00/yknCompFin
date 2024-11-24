@@ -68,9 +68,10 @@ This work is licensed under a [Creative Commons Attribution-NonCommercial 4.0 In
 
 Copyright (c) 2024 Kening Yu (i@cmand.us)
 
-You are free to:
-- ✅ Copy, share, and modify this work
-- ✅ Use this work for personal study and non-commercial purposes
+- The code is shared for reference and learning purposes only
+- Academic integrity and proper citation are required
+- Commercial use is not permitted
+- The school reserves the right to use this work for educational purposes
 
 Under the following terms:
 - ✅ Attribution - You must give credit to the original author and source
