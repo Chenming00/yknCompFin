@@ -8,10 +8,100 @@ const CONFIG = {
     githubRepo: 'https://github.com/Chenming00/yknCompFin'
 };
 
-// 生成 HTML
+// 通用样式，将被注入到每个HTML文件中
+const COMMON_STYLES = `
+<style>
+/* 返回按钮样式 */
+.back-to-home {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #0366d6;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-family: -apple-system, system-ui, sans-serif;
+    box-shadow: 0 2px 8px rgba(3, 102, 214, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.back-to-home:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(3, 102, 214, 0.4);
+}
+
+.back-to-home svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+    .back-to-home {
+        background: #58a6ff;
+        box-shadow: 0 2px 8px rgba(88, 166, 255, 0.3);
+    }
+    .back-to-home:hover {
+        box-shadow: 0 4px 12px rgba(88, 166, 255, 0.4);
+    }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .back-to-home {
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+    }
+}
+</style>
+`;
+
+// 返回按钮的 HTML
+const BACK_BUTTON = `
+<a href="../index.html" class="back-to-home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5"/>
+        <path d="M12 19l-7-7 7-7"/>
+    </svg>
+    返回首页
+</a>
+`;
+
+// 修改作业文件，添加返回按钮
+async function modifyHomeworkFile(filePath) {
+    try {
+        let content = await fs.readFile(filePath, 'utf8');
+        
+        // 如果文件已经有返回按钮，就不重复添加
+        if (content.includes('back-to-home')) {
+            return;
+        }
+
+        // 在 </body> 标签前添加返回按钮和样式
+        content = content.replace(
+            '</head>',
+            COMMON_STYLES + '</head>'
+        ).replace(
+            '</body>',
+            BACK_BUTTON + '</body>'
+        );
+
+        await fs.writeFile(filePath, content);
+        console.log(`已更新作业文件: ${path.basename(filePath)}`);
+    } catch (error) {
+        console.error(`修改作业文件失败 ${filePath}:`, error);
+    }
+}
+
+// 生成主页 HTML
 function generateHTML(htmlFiles) {
-    console.log('正在处理的文件:', htmlFiles);
-    
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,6 +129,7 @@ function generateHTML(htmlFiles) {
             text-align: center;
             color: #0366d6;
             margin-bottom: 2rem;
+            font-size: 2em;
         }
         .homework-grid {
             display: grid;
@@ -102,6 +193,9 @@ function generateHTML(htmlFiles) {
             .container {
                 background: #161b22;
             }
+            h1 {
+                color: #58a6ff;
+            }
             .homework-item {
                 background: #21262d;
                 border-color: #30363d;
@@ -144,7 +238,6 @@ function generateHTML(htmlFiles) {
                         return qNumA - qNumB;
                     })
                     .map(file => {
-                        // 美化显示名称
                         const displayName = file
                             .replace('.html', '')
                             .replace(/hw(\d+)_question(\d+)/i, 'Homework $1 - Question $2');
@@ -178,23 +271,27 @@ function generateHTML(htmlFiles) {
 async function generateIndex() {
     try {
         console.log('开始生成索引页面...');
-        console.log('作业目录:', CONFIG.hwFolder);
-        console.log('输出路径:', CONFIG.outputPath);
-
+        
         // 读取作业文件
         const files = await fs.readdir(CONFIG.hwFolder);
-        console.log('目录内容:', files);
-
         const htmlFiles = files.filter(file => path.extname(file) === '.html');
-        console.log('HTML 文件:', htmlFiles);
-
-        // 生成并写入 index.html
+        
+        // 修改每个作业文件，添加返回按钮
+        for (const file of htmlFiles) {
+            const filePath = path.join(CONFIG.hwFolder, file);
+            await modifyHomeworkFile(filePath);
+        }
+        
+        // 生成索引页面
         const htmlContent = generateHTML(htmlFiles);
         await fs.writeFile(CONFIG.outputPath, htmlContent);
-        console.log('索引页面已生成！');
+        
+        console.log('✅ 所有文件处理完成！');
+        console.log(`- 已处理 ${htmlFiles.length} 个作业文件`);
+        console.log('- 已生成索引页面');
 
     } catch (error) {
-        console.error('生成索引页面时出错:', error);
+        console.error('❌ 生成过程出错:', error);
         throw error;
     }
 }
