@@ -4,11 +4,11 @@ const path = require('path');
 const CONFIG = {
     hwFolder: path.join(__dirname, '../hw'),
     outputPath: path.join(__dirname, '../index.html'),
-    title: 'YKN Computational Finance Homework',
+    title: 'YKN 计算金融作业集',
     githubRepo: 'https://github.com/Chenming00/yknCompFin'
 };
 
-// 通用样式更新，添加 GitHub 按钮样式
+// 更新工具栏的样式和 HTML，特别注意中文字符的编码
 const COMMON_STYLES = `
 <style>
 .floating-toolbar {
@@ -29,12 +29,13 @@ const COMMON_STYLES = `
     border-radius: 50px;
     color: white;
     text-decoration: none;
-    font-family: -apple-system, system-ui, sans-serif;
+    font-family: -apple-system, system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
     font-size: 14px;
     transition: all 0.3s ease;
     cursor: pointer;
     border: none;
     outline: none;
+    white-space: nowrap;
 }
 
 .back-to-home {
@@ -88,7 +89,7 @@ const COMMON_STYLES = `
 <script>
 function downloadPage() {
     const pageContent = document.documentElement.outerHTML;
-    const blob = new Blob([pageContent], { type: 'text/html' });
+    const blob = new Blob([pageContent], { type: 'text/html;charset=utf-8' });
     const url = window.URL.createObjectURL(blob);
     const filename = document.title.toLowerCase().replace(/[^a-z0-9]/g, '_') + '.html';
     const a = document.createElement('a');
@@ -103,7 +104,6 @@ function downloadPage() {
 </script>
 `;
 
-// 更新工具栏 HTML，添加 GitHub 按钮
 const TOOLBAR_HTML = `
 <div class="floating-toolbar">
     <a href="../index.html" class="toolbar-button back-to-home">
@@ -130,15 +130,19 @@ const TOOLBAR_HTML = `
 </div>
 `;
 
-// 修改作业文件，添加工具栏
+// 修改作业文件的函数
 async function modifyHomeworkFile(filePath) {
     try {
         let content = await fs.readFile(filePath, 'utf8');
         
         if (!content.includes('floating-toolbar')) {
+            // 确保 HTML 文件有正确的编码声明
+            if (!content.includes('charset=UTF-8')) {
+                content = content.replace(/<head>/, '<head>\n    <meta charset="UTF-8">');
+            }
             content = content.replace('</head>', COMMON_STYLES + '</head>')
                            .replace('</body>', TOOLBAR_HTML + '</body>');
-            await fs.writeFile(filePath, content);
+            await fs.writeFile(filePath, content, 'utf8');
             console.log(`✅ 已更新: ${path.basename(filePath)}`);
         }
     } catch (error) {
@@ -146,17 +150,17 @@ async function modifyHomeworkFile(filePath) {
     }
 }
 
-// 生成首页 HTML
+// 生成主页 HTML
 function generateHTML(htmlFiles) {
     return `<!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${CONFIG.title}</title>
     <style>
         body {
-            font-family: -apple-system, system-ui, sans-serif;
+            font-family: -apple-system, system-ui, "PingFang SC", "Microsoft YaHei", sans-serif;
             margin: 0;
             padding: 20px;
             background: #f6f8fa;
@@ -248,7 +252,7 @@ function generateHTML(htmlFiles) {
             <svg height="32" viewBox="0 0 16 16" fill="currentColor">
                 <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
             </svg>
-            <span>View on GitHub</span>
+            <span>在 GitHub 上查看</span>
         </a>
         <div class="homework-grid">
             ${htmlFiles.length > 0 
@@ -264,18 +268,18 @@ function generateHTML(htmlFiles) {
                     .map(file => {
                         const displayName = file
                             .replace('.html', '')
-                            .replace(/hw(\d+)_question(\d+)/i, 'Homework $1 - Question $2')
-                            .replace('test', 'Test');
+                            .replace(/hw(\d+)_question(\d+)/i, '作业 $1 - 问题 $2')
+                            .replace('test', '测试');
                         return `
                         <div class="homework-item">
                             <a href="hw/${file}" class="homework-link">${displayName}</a>
                         </div>`;
                     }).join('\n')
-                : '<div class="homework-item">No homework files found</div>'
+                : '<div class="homework-item">暂无作业文件</div>'
             }
         </div>
         <div class="build-info">
-            Last updated: ${new Date().toLocaleString('en-US', { 
+            最后更新: ${new Date().toLocaleString('zh-CN', { 
                 timeZone: 'Asia/Shanghai',
                 year: 'numeric', month: 'long', day: 'numeric',
                 hour: '2-digit', minute: '2-digit',
@@ -288,37 +292,22 @@ function generateHTML(htmlFiles) {
 </html>`;
 }
 
-// 主函数
+// 主函数保持不变
 async function generateIndex() {
     try {
         console.log('🚀 开始生成...');
         
-        // 读取文件
         const files = await fs.readdir(CONFIG.hwFolder);
         const htmlFiles = files.filter(file => path.extname(file) === '.html');
         
-        // 处理每个作业文件
         for (const file of htmlFiles) {
             const filePath = path.join(CONFIG.hwFolder, file);
             await modifyHomeworkFile(filePath);
         }
         
-        // 生成索引页面
         const htmlContent = generateHTML(htmlFiles);
-        await fs.writeFile(CONFIG.outputPath, htmlContent);
+        await fs.writeFile(CONFIG.outputPath, htmlContent, 'utf8');
         
         console.log('✅ 完成！');
         console.log(`- 处理了 ${htmlFiles.length} 个作业文件`);
-        console.log('- 生成了索引页面');
-
-    } catch (error) {
-        console.error('❌ 错误:', error);
-        throw error;
-    }
-}
-
-// 运行
-generateIndex().catch(error => {
-    console.error('❌ 运行失败:', error);
-    process.exit(1);
-});
+        console.log('
