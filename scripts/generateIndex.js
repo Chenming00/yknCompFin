@@ -250,6 +250,7 @@ function generateHTML(htmlFiles) {
             h1 { color: #58a6ff; }
         }
     </style>
+    ${COMMON_STYLES}
 </head>
 <body>
     <div class="container">
@@ -326,4 +327,12 @@ async function generateIndex() {
         
         console.log('✅ Done!');
         console.log(`- Processed ${htmlFiles.length} homework files`);
-        console
+        console.log(`- Generated index page at ${CONFIG.outputPath}`);
+    } catch (error) {
+        console.error('❌ Error:', error);
+        process.exit(1);
+    }
+}
+
+// Run the main function
+generateIndex();
